@@ -1,0 +1,22 @@
+virtual_power:
+  sensor:
+    - platform: template
+      sensors: 
+        load_light_kitchen:
+          friendly_name: "Мощность люстры кухни"
+          unit_of_measurement: "W"
+          icon_template: "mdi:flash"
+          value_template: >-
+            {% if is_state('light.kitchen_light', 'on') %}
+              12 # тут значение в Ваттах, замерянное при включенной лампе
+            {% else %}
+              0
+            {% endif %}
+            
+    - platform: integration
+      source: sensor.load_light_kitchen
+      name: power_integral_light_kitchen
+      unit_prefix: k
+      unit_time: h
+      method: left
+      round: 4
